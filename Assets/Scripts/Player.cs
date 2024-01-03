@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     {
         anim.SetFloat("Strafe", config.InputDir.x);
         anim.SetFloat("Forward", config.InputDir.z);
+
         cc.Move(config.MoveSpeed * Time.deltaTime * config.MoveDir);
         transform.forward = config.FlatCamForward;
     }
