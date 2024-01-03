@@ -11,6 +11,7 @@ public class PlayerMouse : MonoBehaviour
     Vector2 inputDir;
     Vector3 moveDir;
     [SerializeField] float moveSpeed = 5f;
+    [SerializeField] Animator anim;
 
     private void Start()
     {
@@ -19,15 +20,20 @@ public class PlayerMouse : MonoBehaviour
 
     private void Update()
     {
+        Vector3 camDir = mainCam.transform.forward;
+        camDir.y = 0;
+        camDir.Normalize();
+
         Vector3 dir = mainCam.transform.right * inputDir.x + mainCam.transform.forward * inputDir.y;
         dir.y = 0;
         dir.Normalize();
 
         moveDir = dir;
+        anim.SetFloat("Strafe", inputDir.x);
+        anim.SetFloat("Forward", inputDir.y);
 
         transform.position = transform.position + Time.deltaTime * moveSpeed * moveDir;
-        if (moveDir != Vector3.zero)
-            transform.forward = moveDir;
+        transform.forward = camDir;
     }
 
     void OnMove(InputValue input)
