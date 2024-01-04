@@ -25,7 +25,7 @@ public class PlayerConfig : MonoBehaviour
     private Vector3 m_moveDir;
     private float m_moveSpeed = 4f;
     private float m_runInput;
-    private float m_runBoost = 2f;
+    private float m_runBoost = 1f;
 
     private Vector3 m_moveDir_follow;
     private float m_moveDir_follow_lerp = 0.05f;
