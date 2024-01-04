@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface State
+public abstract class State
 {
-    public void OnEnter(PlayerConfig config);
-    public void OnUpdate(PlayerConfig config);
-    public void OnExit(PlayerConfig config);
+    public abstract void OnEnter(PlayerConfig config);
+    public abstract void OnUpdate(PlayerConfig config);
+    public abstract void OnExit(PlayerConfig config);
 }
