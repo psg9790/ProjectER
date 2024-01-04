@@ -5,16 +5,16 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Camera cam;
-    CharacterController cc;
     PlayerConfig config;
-    Animator anim;
+    public Animator anim;
+    Rigidbody rb;
 
     private void Start()
     {
         cam = Camera.main;
-        cc = GetComponent<CharacterController>();
         config = GetComponent<PlayerConfig>();
         anim = GetComponentInChildren<Animator>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -49,7 +49,17 @@ public class Player : MonoBehaviour
             anim.SetFloat("Forward", config.FollowDir.z);
         }
 
-        cc.Move(config.MoveSpeed * Time.deltaTime * config.MoveDir_Global);
+        transform.position += config.MoveSpeed * Time.deltaTime * config.MoveDir_Global;
         transform.forward = config.LookDir;
+    }
+
+    public void Jump()
+    {
+        rb.AddForce(Vector3.up * 5, ForceMode.Impulse);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        anim.SetBool("Jump", false);
     }
 }

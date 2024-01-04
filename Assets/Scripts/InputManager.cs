@@ -19,7 +19,12 @@ public class InputManager : MonoBehaviour
 
     void OnRun(InputValue value)
     {
-        // Debug.Log(value.Get<float>());
         config.SetRunInput(value.Get<float>());
+    }
+
+    void OnJump(InputValue value)
+    {
+        GetComponent<Player>().Jump();
+        GetComponent<Player>().anim.SetBool("Jump", true);
     }
 }
