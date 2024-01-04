@@ -24,9 +24,14 @@ public class PlayerConfig : MonoBehaviour
     #region WASD
     private Vector3 m_moveDir;
     private float m_moveSpeed = 4f;
+    private float m_runInput;
+    private float m_runBoost = 1f;
 
-    private Vector3 follow_moveDir;
-    private float follow_moveDir_lerp = 0.05f;
+    private Vector3 m_moveDir_follow;
+    private float m_moveDir_follow_lerp = 0.05f;
+    public Vector3 MoveDirFollow_Global => m_moveDir_follow;
+    private Vector3 m_lookDir_follow;
+    private float m_lookDir_follow_lerp = 0.025f;
 
     [BoxGroup("WASD")]
     [ShowInInspector]
@@ -35,49 +40,61 @@ public class PlayerConfig : MonoBehaviour
     {
         get
         {
-            follow_moveDir = new Vector3(Mathf.Lerp(follow_moveDir.x, m_moveDir.x, follow_moveDir_lerp),
-            0, Mathf.Lerp(follow_moveDir.z, m_moveDir.z, follow_moveDir_lerp));
+            Vector3 result = m_moveDir_follow;
+            if (m_moveDir != Vector3.zero)
+            {
 
-            return follow_moveDir;
+            }
+            return result;
         }
     }
-    [BoxGroup("WASD")]
-    [ShowInInspector]
-    [ReadOnly]
-    public Vector3 InputDir
-    {
-        get
-        {
 
-            return m_moveDir.normalized;
+    [BoxGroup("WASD")]
+    [ShowInInspector]
+    [ReadOnly]
+    public Vector3 LookDir => m_lookDir_follow;
+
+    [BoxGroup("WASD")]
+    [ShowInInspector]
+    [ReadOnly]
+    public Vector3 InputDir_Local
+    {
+        get
+        {
+            return m_moveDir.normalized * (1f + m_runInput * m_runBoost);
+        }
+    }
+
+    [BoxGroup("WASD")]
+    [ShowInInspector]
+    [ReadOnly]
+    public Vector3 MoveDir_Global
+    {
+        get
+        {
+            return FlatCamForward * FollowDir.z + FlatCamRight * FollowDir.x;
         }
     }
     [BoxGroup("WASD")]
     [ShowInInspector]
     [ReadOnly]
-    public Vector3 MoveDir
-    {
-        get
-        {
-            Vector3 ret = FlatCamForward * m_moveDir.z + FlatCamRight * m_moveDir.x;
-            return ret.normalized;
-        }
-    }
-    [BoxGroup("WASD")]
-    [ShowInInspector]
-    [ReadOnly]
-    public float MoveSpeed
-    {
-        get
-        {
-            return m_moveSpeed;
-        }
-    }
+    public float MoveSpeed => m_moveSpeed;
 
     public void SetMoveDirection(Vector3 dir)
     {
         m_moveDir = dir;
     }
+    public void SetRunInput(float value)
+    {
+        m_runInput = value;
+    }
     #endregion
 
+    private void Update()
+    {
+        m_moveDir_follow = new Vector3(Mathf.Lerp(m_moveDir_follow.x, InputDir_Local.x, m_moveDir_follow_lerp),
+            0, Mathf.Lerp(m_moveDir_follow.z, InputDir_Local.z, m_moveDir_follow_lerp));
+
+        m_lookDir_follow = Vector3.Lerp(m_lookDir_follow, FlatCamForward, m_lookDir_follow_lerp);
+    }
 }

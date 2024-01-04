@@ -37,10 +37,19 @@ public class Player : MonoBehaviour
 
     void MoveControl()
     {
-        anim.SetFloat("Strafe", config.FollowDir.x);
-        anim.SetFloat("Forward", config.FollowDir.z);
+        // Debug.Log($"{config.MoveDir_Global.sqrMagnitude} / {config.MoveDirFollow_Global.sqrMagnitude}");
+        if (config.InputDir_Local.sqrMagnitude < 0.3f /*&& config.MoveDirFollow_Global.sqrMagnitude < 0.3f*/)
+        {
+            anim.SetBool("Move", false);
+        }
+        else
+        {
+            anim.SetBool("Move", true);
+            anim.SetFloat("Strafe", config.FollowDir.x);
+            anim.SetFloat("Forward", config.FollowDir.z);
+        }
 
-        cc.Move(config.MoveSpeed * Time.deltaTime * config.MoveDir);
-        transform.forward = config.FlatCamForward;
+        cc.Move(config.MoveSpeed * Time.deltaTime * config.MoveDir_Global);
+        transform.forward = config.LookDir;
     }
 }
