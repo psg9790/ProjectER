@@ -4,7 +4,9 @@ using UnityEngine;
 
 public abstract class State
 {
-    public abstract void OnEnter(PlayerConfig config);
-    public abstract void OnUpdate(PlayerConfig config);
-    public abstract void OnExit(PlayerConfig config);
+    public abstract void OnEnter();
+    public abstract void OnUpdate();
+    public abstract void OnFixedUpdate();
+    public abstract void OnLateUpdate();
+    public abstract void OnExit();
 }
