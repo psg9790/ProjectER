@@ -1,24 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer.Internal;
 using UnityEngine;
 
-public abstract class StateMachine : MonoBehaviour
+public class StateMachine : MonoBehaviour
 {
     // 플레이어 정보
-    protected PlayerConfig config;
+    public PlayerConfig Config { get; private set; }
+    public Animator Animator { get; private set; }
     // 상태저장용 딕셔너리
     protected Dictionary<string, State> stateTable;
     // 이전 상태
     protected State prevState;
     // 현재 상태
-    protected State curState;
+    public State curState { get; private set; }
 
-    [SerializeField] StateInfo stateInfo;
+    [SerializeField] MachineInfo machineInfo;
 
     protected void Awake()
     {
-        config = GetComponent<PlayerConfig>();
+        Config = GetComponent<PlayerConfig>();
+        Animator = GetComponentInChildren<Animator>();
     }
 
     protected void Start()
@@ -28,23 +33,38 @@ public abstract class StateMachine : MonoBehaviour
 
     protected void Initialize()
     {
-        Type enumType = Type.GetType(stateInfo.ToString());
+        stateTable = new Dictionary<string, State>();
 
+        Type enumType = Type.GetType(machineInfo.ToString());
+        foreach (string name in enumType.GetEnumNames())
+        {
+            Type classType = Type.GetType(name + "State");
+            System.Object sub = Activator.CreateInstance(classType);
+            stateTable.Add(name, sub as State);
+        }
+
+        ChangeState("Idle");
     }
 
     protected void Update()
     {
-        curState.OnUpdate();
+        if (curState is null)
+            return;
+        curState.OnUpdate(this);
     }
 
     private void FixedUpdate()
     {
-        curState.OnFixedUpdate();
+        if (curState is null)
+            return;
+        curState.OnFixedUpdate(this);
     }
 
     private void LateUpdate()
     {
-        curState.OnLateUpdate();
+        if (curState is null)
+            return;
+        curState.OnLateUpdate(this);
     }
 
     // 상태저장용 딕셔너리 초기화
@@ -66,7 +86,7 @@ public abstract class StateMachine : MonoBehaviour
         curState = foundState;
 
         if (prevState is null == false)
-            prevState.OnExit();
-        curState.OnEnter();
+            prevState.OnExit(this);
+        curState.OnEnter(this);
     }
 }

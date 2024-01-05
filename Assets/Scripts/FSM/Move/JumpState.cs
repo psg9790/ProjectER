@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpState : MonoBehaviour
+public class JumpState : State
 {
-    // Start is called before the first frame update
-    void Start()
+    public void OnEnter(StateMachine machine)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnExit(StateMachine machine)
     {
-        
+    }
+
+    public void OnFixedUpdate(StateMachine machine)
+    {
+    }
+
+    public void OnLateUpdate(StateMachine machine)
+    {
+    }
+
+    public void OnUpdate(StateMachine machine)
+    {
     }
 }

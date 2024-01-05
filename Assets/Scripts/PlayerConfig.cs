@@ -23,13 +23,12 @@ public class PlayerConfig : MonoBehaviour
 
     #region WASD
     private Vector3 m_moveDir;
-    private float m_moveSpeed = 4f;
+    private float m_moveSpeed = 3f;
     private float m_runInput;
-    private float m_runBoost = 1f;
+    private float m_runBoost = 2f;
 
     private Vector3 m_moveDir_follow;
     private float m_moveDir_follow_lerp = 0.05f;
-    public Vector3 MoveDirFollow_Global => m_moveDir_follow;
     private Vector3 m_lookDir_follow;
     private float m_lookDir_follow_lerp = 0.025f;
 
@@ -40,12 +39,7 @@ public class PlayerConfig : MonoBehaviour
     {
         get
         {
-            Vector3 result = m_moveDir_follow;
-            if (m_moveDir != Vector3.zero)
-            {
-
-            }
-            return result;
+            return m_moveDir_follow;
         }
     }
 
@@ -75,6 +69,8 @@ public class PlayerConfig : MonoBehaviour
             return FlatCamForward * FollowDir.z + FlatCamRight * FollowDir.x;
         }
     }
+    [BoxGroup("WASD")][ShowInInspector][ReadOnly] public Vector3 MoveDirFollow_Global => m_moveDir_follow;
+
     [BoxGroup("WASD")]
     [ShowInInspector]
     [ReadOnly]
@@ -89,12 +85,34 @@ public class PlayerConfig : MonoBehaviour
         m_runInput = value;
     }
     #endregion
+    Camera cam;
+    private void Start()
+    {
+        cam = Camera.main;
+    }
 
     private void Update()
     {
+        CalcFlatCamDir();
+
         m_moveDir_follow = new Vector3(Mathf.Lerp(m_moveDir_follow.x, InputDir_Local.x, m_moveDir_follow_lerp),
             0, Mathf.Lerp(m_moveDir_follow.z, InputDir_Local.z, m_moveDir_follow_lerp));
+        if (Vector3.Distance(m_moveDir_follow, InputDir_Local) < 0.1f)
+            m_moveDir_follow = InputDir_Local;
 
         m_lookDir_follow = Vector3.Lerp(m_lookDir_follow, FlatCamForward, m_lookDir_follow_lerp);
+        if (Vector3.Distance(m_lookDir_follow, FlatCamForward) < 0.1f)
+            m_lookDir_follow = FlatCamForward;
+    }
+
+    void CalcFlatCamDir()
+    {
+        Vector3 dir = cam.transform.forward;
+        dir.y = 0;
+        SetFlatCamForward(dir);
+
+        dir = cam.transform.right;
+        dir.y = 0;
+        SetFlatCamRight(dir);
     }
 }

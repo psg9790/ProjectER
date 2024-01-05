@@ -4,28 +4,34 @@ using UnityEngine;
 
 public class IdleState : State
 {
-    public override void OnEnter()
+    public void OnEnter(StateMachine machine)
     {
         Debug.Log("idle enter");
+
     }
 
-    public override void OnExit()
+    public void OnExit(StateMachine machine)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+        Debug.Log("idle exit");
     }
 
-    public override void OnFixedUpdate()
+    public void OnFixedUpdate(StateMachine machine)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
-    public override void OnLateUpdate()
+    public void OnLateUpdate(StateMachine machine)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
-    public override void OnUpdate()
+    public void OnUpdate(StateMachine machine)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+        if (machine.Config.MoveDir_Global.sqrMagnitude > 0.15f)
+        {
+            machine.ChangeState("Move");
+        }
     }
 }

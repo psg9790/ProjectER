@@ -16,19 +16,13 @@ public class Player : MonoBehaviour
         config = GetComponent<PlayerConfig>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
-
-        Type t1 = Type.GetType("MoveState");
-        foreach (var val in t1.GetEnumNames())
-        {
-            Debug.Log(val);
-        }
     }
 
     void Update()
     {
         CalcFlatCamDir();
 
-        MoveControl();
+        //MoveControl();
     }
 
     void CalcFlatCamDir()

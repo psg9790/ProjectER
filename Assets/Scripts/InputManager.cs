@@ -11,11 +11,11 @@ public class InputManager : MonoBehaviour
         config = GetComponent<PlayerConfig>();
     }
 
-    void OnMove(InputValue value)
-    {
-        Vector2 input = value.Get<Vector2>();
-        config.SetMoveDirection(new Vector3(input.x, 0, input.y));
-    }
+    // void OnMove(InputValue value)
+    // {
+    //     Vector2 input = value.Get<Vector2>();
+    //     config.SetMoveDirection(new Vector3(input.x, 0, input.y));
+    // }
 
     void OnRun(InputValue value)
     {
@@ -26,5 +26,22 @@ public class InputManager : MonoBehaviour
     {
         GetComponent<Player>().Jump();
         GetComponent<Player>().anim.SetBool("Jump", true);
+    }
+
+    void OnW(InputValue value)
+    {
+
+    }
+    void OnA(InputValue value)
+    {
+
+    }
+    void OnS(InputValue value)
+    {
+
+    }
+    void OnD(InputValue value)
+    {
+
     }
 }

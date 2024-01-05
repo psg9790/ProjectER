@@ -1,10 +1,10 @@
-public enum StateInfo
+public enum MachineInfo
 {
-    MovingState,
-    AttackState,
+    MoveMachine,
+    AttackMachine,
 }
 
-public enum MovingState
+public enum MoveMachine
 {
     Idle,
     Move,

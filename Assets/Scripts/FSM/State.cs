@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class State
+public interface State
 {
-    public abstract void OnEnter();
-    public abstract void OnUpdate();
-    public abstract void OnFixedUpdate();
-    public abstract void OnLateUpdate();
-    public abstract void OnExit();
+    public void OnEnter(StateMachine machine);
+    public void OnUpdate(StateMachine machine);
+    public void OnFixedUpdate(StateMachine machine);
+    public void OnLateUpdate(StateMachine machine);
+    public void OnExit(StateMachine machine);
 }
