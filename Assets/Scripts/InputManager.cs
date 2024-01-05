@@ -22,10 +22,20 @@ public class InputManager : MonoBehaviour
         config.SetRunInput(value.Get<float>());
     }
 
+    Coroutine jumpBufferCoroutine;
     void OnJump(InputValue value)
     {
-        GetComponent<Player>().Jump();
-        GetComponent<Player>().anim.SetBool("Jump", true);
+        if (jumpBufferCoroutine is null == false)
+        {
+            StopCoroutine(jumpBufferCoroutine);
+        }
+        jumpBufferCoroutine = StartCoroutine(JumpBufferCo());
+    }
+    IEnumerator JumpBufferCo()
+    {
+        config.SetJumpInput(true);
+        yield return new WaitForSeconds(0.15f);
+        config.SetJumpInput(false);
     }
 
     Vector3 moveDir = Vector3.zero;
@@ -37,12 +47,12 @@ public class InputManager : MonoBehaviour
             if (moveDir.z < 0)
             {
                 wAmount = -moveDir.z * 2;
-                Debug.Log($"check A {wAmount}");
+                // Debug.Log($"check A {wAmount}");
             }
             else
             {
                 wAmount = 1;
-                Debug.Log("start");
+                // Debug.Log("start");
             }
             moveDir.z += wAmount;
         }
@@ -60,12 +70,12 @@ public class InputManager : MonoBehaviour
             if (moveDir.z > 0)
             {
                 sAmount = -moveDir.z * 2;
-                Debug.Log($"check A {sAmount}");
+                // Debug.Log($"check A {sAmount}");
             }
             else
             {
                 sAmount = -1;
-                Debug.Log("start");
+                // Debug.Log("start");
             }
             moveDir.z += sAmount;
         }
@@ -83,12 +93,12 @@ public class InputManager : MonoBehaviour
             if (moveDir.x > 0)
             {
                 aAmount = -moveDir.x * 2;
-                Debug.Log($"check A {aAmount}");
+                // Debug.Log($"check A {aAmount}");
             }
             else
             {
                 aAmount = -1;
-                Debug.Log("start");
+                // Debug.Log("start");
             }
             moveDir.x += aAmount;
         }
@@ -107,12 +117,12 @@ public class InputManager : MonoBehaviour
             if (moveDir.x < 0)
             {
                 dAmount = -moveDir.x * 2;
-                Debug.Log($"check D {dAmount}");
+                // Debug.Log($"check D {dAmount}");
             }
             else
             {
                 dAmount = 1;
-                Debug.Log("start");
+                // Debug.Log("start");
             }
             moveDir.x += dAmount;
         }

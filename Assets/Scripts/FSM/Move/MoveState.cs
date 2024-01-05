@@ -7,7 +7,7 @@ public class MoveState : State
     public void OnEnter(StateMachine machine)
     {
         machine.Animator.SetBool("Move", true);
-        // Debug.Log("move enter");
+        Debug.Log("move enter");
     }
 
     public void OnExit(StateMachine machine)
@@ -32,9 +32,13 @@ public class MoveState : State
         machine.transform.forward = machine.Config.LookDir;
 
 
-        if (machine.Config.FollowDir.sqrMagnitude < 0.15f && machine.Config.InputDir_Local == Vector3.zero)
+        if (machine.Config.InputDir_Local == Vector3.zero)
         {
             machine.ChangeState("Idle");
+        }
+        if (machine.Config.JumpInput)
+        {
+            machine.ChangeState("Jump");
         }
     }
 }

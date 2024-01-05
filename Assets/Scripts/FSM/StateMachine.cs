@@ -11,6 +11,7 @@ public class StateMachine : MonoBehaviour
     // 플레이어 정보
     public PlayerConfig Config { get; private set; }
     public Animator Animator { get; private set; }
+    public Rigidbody Rigidbody { get; private set; }
     // 상태저장용 딕셔너리
     protected Dictionary<string, State> stateTable;
     // 이전 상태
@@ -24,6 +25,7 @@ public class StateMachine : MonoBehaviour
     {
         Config = GetComponent<PlayerConfig>();
         Animator = GetComponentInChildren<Animator>();
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
     protected void Start()
@@ -88,5 +90,11 @@ public class StateMachine : MonoBehaviour
         if (prevState is null == false)
             prevState.OnExit(this);
         curState.OnEnter(this);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawCube(transform.position + Vector3.up * 0.05f, new Vector3(0.5f, 0.2f, 0.5f));
     }
 }

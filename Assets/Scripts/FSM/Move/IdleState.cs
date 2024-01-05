@@ -6,7 +6,7 @@ public class IdleState : State
 {
     public void OnEnter(StateMachine machine)
     {
-        // Debug.Log("idle enter");
+        Debug.Log("idle enter");
 
     }
 
@@ -29,9 +29,13 @@ public class IdleState : State
     public void OnUpdate(StateMachine machine)
     {
         //throw new System.NotImplementedException();
-        if (machine.Config.MoveDir_Global.sqrMagnitude > 0.15f)
+        if (machine.Config.InputDir_Local != Vector3.zero)
         {
             machine.ChangeState("Move");
+        }
+        if (machine.Config.JumpInput)
+        {
+            machine.ChangeState("Jump");
         }
     }
 }
