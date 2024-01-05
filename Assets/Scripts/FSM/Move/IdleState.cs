@@ -6,14 +6,14 @@ public class IdleState : State
 {
     public void OnEnter(StateMachine machine)
     {
-        Debug.Log("idle enter");
+        // Debug.Log("idle enter");
 
     }
 
     public void OnExit(StateMachine machine)
     {
         //throw new System.NotImplementedException();
-        Debug.Log("idle exit");
+        // Debug.Log("idle exit");
     }
 
     public void OnFixedUpdate(StateMachine machine)

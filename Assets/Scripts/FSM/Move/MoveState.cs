@@ -7,13 +7,13 @@ public class MoveState : State
     public void OnEnter(StateMachine machine)
     {
         machine.Animator.SetBool("Move", true);
-        Debug.Log("move enter");
+        // Debug.Log("move enter");
     }
 
     public void OnExit(StateMachine machine)
     {
         machine.Animator.SetBool("Move", false);
-        Debug.Log("move exit");
+        // Debug.Log("move exit");
     }
 
     public void OnFixedUpdate(StateMachine machine)

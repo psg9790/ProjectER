@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 public class PlayerConfig : MonoBehaviour
 {
@@ -78,6 +79,7 @@ public class PlayerConfig : MonoBehaviour
 
     public void SetMoveDirection(Vector3 dir)
     {
+        dir.Set(Math.Clamp(dir.x, -1, 1), 0, Math.Clamp(dir.z, -1, 1));
         m_moveDir = dir;
     }
     public void SetRunInput(float value)
