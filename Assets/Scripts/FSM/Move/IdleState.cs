@@ -29,13 +29,13 @@ public class IdleState : State
     public void OnUpdate(StateMachine machine)
     {
         //throw new System.NotImplementedException();
-        if (machine.Config.InputDir_Local != Vector3.zero)
+        if (machine.Config.XZInputDir != Vector2.zero)
         {
             machine.ChangeState("Move");
         }
-        if (machine.Config.JumpInput)
-        {
-            machine.ChangeState("Jump");
-        }
+        // if (machine.Config.JumpInput)
+        // {
+        //     machine.ChangeState("Jump");
+        // }
     }
 }

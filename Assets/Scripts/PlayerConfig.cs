@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
+using System.Runtime.InteropServices;
 
 public class PlayerConfig : MonoBehaviour
 {
@@ -19,50 +20,53 @@ public class PlayerConfig : MonoBehaviour
     #endregion
 
     #region WASD
-    private Vector3 m_moveDir;
-    private float m_moveSpeed = 3f;
-    private float m_runInput;
+    private Vector2 m_inputDir;
+    private float m_moveSpeed = 4f;
+    private float m_runInput;   // 0 or 1
     private float m_runBoost = 2f;
 
-    private Vector3 m_moveDir_follow;
-    private float m_moveDir_follow_lerp = 0.04f;
-
-    private Vector3 m_lookDir_follow;
-    private float m_lookDir_follow_lerp = 0.025f;
+    private Vector3 m_inputDir_follow;
+    private float m_inputDir_follow_lerp = 0.04f;
 
     private bool m_jump_input;
+    /// <summary>
+    /// 점프 키 입력시 활성화 후 꺼짐
+    /// </summary>
     [BoxGroup("WASD")]
     [ShowInInspector]
     [ReadOnly]
     public bool JumpInput => m_jump_input;
-
+    /// <summary>
+    /// 4방향 키 입력에 속도 적용
+    /// </summary>
     [BoxGroup("WASD")]
     [ShowInInspector]
     [ReadOnly]
-    public Vector3 FollowDir
+    public Vector2 InputDir_Local
     {
         get
         {
-            return m_moveDir_follow;
+            return m_inputDir.normalized * (1f + m_runInput * m_runBoost);
         }
     }
 
+    /// <summary>
+    /// 4방향 키 입력을 부드럽게 따라가는 값
+    /// </summary>
     [BoxGroup("WASD")]
     [ShowInInspector]
     [ReadOnly]
-    public Vector3 LookDir => m_lookDir_follow;
-
-    [BoxGroup("WASD")]
-    [ShowInInspector]
-    [ReadOnly]
-    public Vector3 InputDir_Local
+    public Vector3 InputDirFollow
     {
         get
         {
-            return m_moveDir.normalized * (1f + m_runInput * m_runBoost);
+            return m_inputDir_follow;
         }
     }
 
+    /// <summary>
+    /// 카메라 방향 기준 움직임 벡터
+    /// </summary>
     [BoxGroup("WASD")]
     [ShowInInspector]
     [ReadOnly]
@@ -70,17 +74,54 @@ public class PlayerConfig : MonoBehaviour
     {
         get
         {
-            return FlatCamForward * m_moveDir_follow.z + FlatCamRight * m_moveDir_follow.x + Vector3.up * m_moveDir_follow.y;
+            Vector3 ret = FlatCamForward * m_inputDir_follow.z + FlatCamRight * m_inputDir_follow.x;
+            return ret;
         }
     }
-    [BoxGroup("WASD")][ShowInInspector][ReadOnly] public Vector3 MoveDirFollow_Global => m_moveDir_follow;
 
+    /// <summary>
+    /// 평면 움직임 벡터
+    /// </summary>
     [BoxGroup("WASD")]
     [ShowInInspector]
     [ReadOnly]
-    public float MoveSpeed => m_moveSpeed;
+    public Vector2 XZInputDir
+    {
+        get
+        {
+            return m_inputDir;
+        }
+    }
 
+    /// <summary>
+    /// 플레이어가 바라볼 방향
+    /// </summary>
+    [BoxGroup("WASD")]
+    [ShowInInspector]
+    [ReadOnly]
+    public Vector3 LookDir
+    {
+        get
+        {
+            Vector3 ret = FlatCamForward;
+            ret.y = 0;
+            return ret;
+        }
+    }
 
+    /// <summary>
+    /// 이동 속도
+    /// </summary>
+    [BoxGroup("WASD")]
+    [ShowInInspector]
+    [ReadOnly]
+    public float MoveSpeed
+    {
+        get
+        {
+            return m_moveSpeed;
+        }
+    }
     #endregion
 
     Camera cam;
@@ -96,12 +137,10 @@ public class PlayerConfig : MonoBehaviour
         CalcFlatCamDir();
 
 
-        m_moveDir_follow = new Vector3(Mathf.Lerp(m_moveDir_follow.x, InputDir_Local.x, m_moveDir_follow_lerp),
-            0, Mathf.Lerp(m_moveDir_follow.z, InputDir_Local.z, m_moveDir_follow_lerp));
+        m_inputDir_follow = new Vector3(Mathf.Lerp(m_inputDir_follow.x, InputDir_Local.x, m_inputDir_follow_lerp),
+            InputDir_Local.y, Mathf.Lerp(m_inputDir_follow.z, InputDir_Local.y, m_inputDir_follow_lerp));
 
-        m_lookDir_follow = Vector3.Lerp(m_lookDir_follow, FlatCamForward, m_lookDir_follow_lerp);
-        if (Vector3.Distance(m_lookDir_follow, FlatCamForward) < 0.1f)
-            m_lookDir_follow = FlatCamForward;
+        //m_inputDir.y -= 1;
     }
     #endregion
 
@@ -124,10 +163,10 @@ public class PlayerConfig : MonoBehaviour
         dir.y = 0;
         SetFlatCamRight(dir);
     }
-    public void SetMoveDirection(Vector3 dir)
+    public void SetXZInputDir(Vector2 dir)
     {
-        dir.Set(Math.Clamp(dir.x, -1, 1), m_moveDir.y, Math.Clamp(dir.z, -1, 1));
-        m_moveDir = dir;
+        m_inputDir.x = Math.Clamp(dir.x, -1, 1);
+        m_inputDir.y = Math.Clamp(dir.y, -1, 1);
     }
     public void SetRunInput(float value)
     {

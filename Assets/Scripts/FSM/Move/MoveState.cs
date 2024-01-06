@@ -26,19 +26,18 @@ public class MoveState : State
 
     public void OnUpdate(StateMachine machine)
     {
-        machine.transform.position += Time.deltaTime * machine.Config.MoveSpeed * machine.Config.MoveDir_Global;
-        machine.Animator.SetFloat("Strafe", machine.Config.FollowDir.x);
-        machine.Animator.SetFloat("Forward", machine.Config.FollowDir.z);
+        //machine.transform.position += Time.deltaTime * machine.Config.MoveSpeed * machine.Config.MoveDir_Global;
+        machine.cc.Move(Time.deltaTime * machine.Config.MoveSpeed * machine.Config.MoveDir_Global);
+        Debug.DrawRay(machine.transform.position, machine.Config.MoveSpeed * machine.Config.MoveDir_Global, Color.red, 1f);
+
+        machine.Animator.SetFloat("Strafe", machine.Config.InputDirFollow.x);
+        machine.Animator.SetFloat("Forward", machine.Config.InputDirFollow.z);
         machine.transform.forward = machine.Config.LookDir;
 
 
-        if (machine.Config.InputDir_Local == Vector3.zero)
+        if (machine.Config.XZInputDir == Vector2.zero)
         {
             machine.ChangeState("Idle");
-        }
-        if (machine.Config.JumpInput)
-        {
-            machine.ChangeState("Jump");
         }
     }
 }

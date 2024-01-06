@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer.Internal;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class StateMachine : MonoBehaviour
     // 플레이어 정보
     public PlayerConfig Config { get; private set; }
     public Animator Animator { get; private set; }
-    public Rigidbody Rigidbody { get; private set; }
+    public CharacterController cc { get; private set; }
     // 상태저장용 딕셔너리
     protected Dictionary<string, State> stateTable;
     // 이전 상태
@@ -25,14 +26,14 @@ public class StateMachine : MonoBehaviour
     {
         Config = GetComponent<PlayerConfig>();
         Animator = GetComponentInChildren<Animator>();
-        Rigidbody = GetComponent<Rigidbody>();
+        cc = GetComponent<CharacterController>();
     }
 
     protected void Start()
     {
         Initialize();
     }
-
+    // 상태저장용 딕셔너리 초기화
     protected void Initialize()
     {
         stateTable = new Dictionary<string, State>();
@@ -69,13 +70,12 @@ public class StateMachine : MonoBehaviour
         curState.OnLateUpdate(this);
     }
 
-    // 상태저장용 딕셔너리 초기화
-
     public void ChangeState(State nextState)
     {
         ChangeState(nextState.ToString());
     }
 
+    [Button]
     public void ChangeState(string nextState)
     {
         stateTable.TryGetValue(nextState, out State foundState);

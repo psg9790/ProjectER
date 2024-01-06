@@ -46,8 +46,8 @@ public class Player : MonoBehaviour
         else
         {
             anim.SetBool("Move", true);
-            anim.SetFloat("Strafe", config.FollowDir.x);
-            anim.SetFloat("Forward", config.FollowDir.z);
+            anim.SetFloat("Strafe", config.InputDirFollow.x);
+            anim.SetFloat("Forward", config.InputDirFollow.z);
         }
 
         transform.position += config.MoveSpeed * Time.deltaTime * config.MoveDir_Global;

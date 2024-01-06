@@ -38,15 +38,15 @@ public class InputManager : MonoBehaviour
         config.SetJumpInput(false);
     }
 
-    Vector3 moveDir = Vector3.zero;
+    Vector2 moveDir = Vector3.zero;
     float wAmount = 0;
     void OnW(InputValue value)
     {
         if (value.isPressed)
         {
-            if (moveDir.z < 0)
+            if (moveDir.y < 0)
             {
-                wAmount = -moveDir.z * 2;
+                wAmount = -moveDir.y * 2;
                 // Debug.Log($"check A {wAmount}");
             }
             else
@@ -54,22 +54,22 @@ public class InputManager : MonoBehaviour
                 wAmount = 1;
                 // Debug.Log("start");
             }
-            moveDir.z += wAmount;
+            moveDir.y += wAmount;
         }
         else
         {
-            moveDir.z -= wAmount;
+            moveDir.y -= wAmount;
         }
-        config.SetMoveDirection(moveDir);
+        config.SetXZInputDir(moveDir);
     }
     float sAmount = 0;
     void OnS(InputValue value)
     {
         if (value.isPressed)
         {
-            if (moveDir.z > 0)
+            if (moveDir.y > 0)
             {
-                sAmount = -moveDir.z * 2;
+                sAmount = -moveDir.y * 2;
                 // Debug.Log($"check A {sAmount}");
             }
             else
@@ -77,13 +77,13 @@ public class InputManager : MonoBehaviour
                 sAmount = -1;
                 // Debug.Log("start");
             }
-            moveDir.z += sAmount;
+            moveDir.y += sAmount;
         }
         else
         {
-            moveDir.z -= sAmount;
+            moveDir.y -= sAmount;
         }
-        config.SetMoveDirection(moveDir);
+        config.SetXZInputDir(moveDir);
     }
     float aAmount = 0;
     void OnA(InputValue value)
@@ -107,7 +107,7 @@ public class InputManager : MonoBehaviour
             moveDir.x -= aAmount;
         }
 
-        config.SetMoveDirection(moveDir);
+        config.SetXZInputDir(moveDir);
     }
     float dAmount = 0;
     void OnD(InputValue value)
@@ -130,6 +130,6 @@ public class InputManager : MonoBehaviour
         {
             moveDir.x -= dAmount;
         }
-        config.SetMoveDirection(moveDir);
+        config.SetXZInputDir(moveDir);
     }
 }
