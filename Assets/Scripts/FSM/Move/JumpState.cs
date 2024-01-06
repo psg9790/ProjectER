@@ -7,13 +7,13 @@ public class JumpState : State
     public void OnEnter(StateMachine machine)
     {
         Debug.Log("jump enter");
-        machine.Config.SetJumpInput(false);
-        machine.Animator.SetBool("Jump", true);
+        machine.config.SetJumpInput(false);
+        machine.anim.SetBool("Jump", true);
     }
 
     public void OnExit(StateMachine machine)
     {
-        machine.Animator.SetBool("Jump", false);
+        machine.anim.SetBool("Jump", false);
     }
 
     public void OnFixedUpdate(StateMachine machine)

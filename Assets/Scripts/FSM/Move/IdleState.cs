@@ -7,7 +7,7 @@ public class IdleState : State
     public void OnEnter(StateMachine machine)
     {
         Debug.Log("idle enter");
-
+        machine.rigid.velocity = Vector3.zero;
     }
 
     public void OnExit(StateMachine machine)
@@ -29,7 +29,7 @@ public class IdleState : State
     public void OnUpdate(StateMachine machine)
     {
         //throw new System.NotImplementedException();
-        if (machine.Config.XZInputDir != Vector2.zero)
+        if (machine.config.XZInputDir != Vector2.zero)
         {
             machine.ChangeState("Move");
         }

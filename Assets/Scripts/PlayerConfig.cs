@@ -21,12 +21,12 @@ public class PlayerConfig : MonoBehaviour
 
     #region WASD
     private Vector2 m_inputDir;
-    private float m_moveSpeed = 4f;
+    [SerializeField] private float m_moveSpeed = 12f;
     private float m_runInput;   // 0 or 1
-    private float m_runBoost = 2f;
+    [SerializeField] private float m_runBoost = 1f;
 
     private Vector3 m_inputDir_follow;
-    private float m_inputDir_follow_lerp = 0.04f;
+    private float m_inputDir_follow_lerp = 0.1f;
 
     private bool m_jump_input;
     /// <summary>

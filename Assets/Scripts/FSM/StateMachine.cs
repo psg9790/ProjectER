@@ -10,9 +10,10 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
     // 플레이어 정보
-    public PlayerConfig Config { get; private set; }
-    public Animator Animator { get; private set; }
-    public CharacterController cc { get; private set; }
+    public PlayerConfig config { get; private set; }
+    public Animator anim { get; private set; }
+    public Rigidbody rigid { get; private set; }
+
     // 상태저장용 딕셔너리
     protected Dictionary<string, State> stateTable;
     // 이전 상태
@@ -24,9 +25,9 @@ public class StateMachine : MonoBehaviour
 
     protected void Awake()
     {
-        Config = GetComponent<PlayerConfig>();
-        Animator = GetComponentInChildren<Animator>();
-        cc = GetComponent<CharacterController>();
+        config = GetComponent<PlayerConfig>();
+        anim = GetComponentInChildren<Animator>();
+        rigid = GetComponent<Rigidbody>();
     }
 
     protected void Start()
