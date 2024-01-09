@@ -33,9 +33,12 @@ public class JumpState : State
 
     public void OnUpdate(StateMachine machine)
     {
-        Ray ray = new Ray(machine.transform.position, machine.config.MoveDir_Global.normalized);
         Debug.DrawRay(machine.transform.position, machine.config.MoveDir_Global.normalized * 0.7f, Color.red, 1f);
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 0.7f, LayerMask.NameToLayer("Player")) == false)
+
+        Ray ray = new Ray(machine.transform.position, machine.config.MoveDir_Global.normalized);
+
+        RaycastHit hitInfo;
+        if (!Physics.Raycast(ray, out hitInfo, 0.7f, LayerMask.NameToLayer("Player")))
         {
             machine.rigid.MovePosition(machine.transform.position + 0.5f * Time.deltaTime * machine.config.MoveSpeed * machine.config.MoveDir_Global);
         }

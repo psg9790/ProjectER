@@ -94,10 +94,4 @@ public class StateMachine : MonoBehaviour
             prevState.OnExit(this);
         curState.OnEnter(this);
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawCube(transform.position + Vector3.up * 0.05f, new Vector3(0.5f, 0.2f, 0.5f));
-    }
 }
