@@ -14,7 +14,7 @@ public class JumpState : State
         machine.config.SetJumpInput(false);
         machine.anim.SetBool("Jump", true);
         // machine.rigid.AddForce(Vector3.up * 5f, ForceMode.Impulse);
-        machine.rigid.velocity += Vector3.up * 6f;
+        machine.rigid.velocity += Vector3.up * 5.5f;
         Task.Run(() => DoGroundCheck(500));
     }
 
@@ -33,8 +33,8 @@ public class JumpState : State
 
     public void OnUpdate(StateMachine machine)
     {
-        Ray ray = new Ray(machine.transform.position, machine.transform.forward);
-        Debug.DrawRay(machine.transform.position, machine.transform.forward * 0.7f, Color.red, 1f);
+        Ray ray = new Ray(machine.transform.position, machine.config.MoveDir_Global.normalized);
+        Debug.DrawRay(machine.transform.position, machine.config.MoveDir_Global.normalized * 0.7f, Color.red, 1f);
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 0.7f, LayerMask.NameToLayer("Player")) == false)
         {
             machine.rigid.MovePosition(machine.transform.position + 0.5f * Time.deltaTime * machine.config.MoveSpeed * machine.config.MoveDir_Global);
