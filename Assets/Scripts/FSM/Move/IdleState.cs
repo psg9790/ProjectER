@@ -37,5 +37,9 @@ public class IdleState : State
         {
             machine.ChangeState("Jump");
         }
+        if (machine.gc.IsGrounded() == false)
+        {
+            machine.ChangeState("Drop");
+        }
     }
 }

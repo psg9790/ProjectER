@@ -9,4 +9,5 @@ public enum MoveMachine
     Idle,
     Move,
     Jump,
+    Drop,
 }

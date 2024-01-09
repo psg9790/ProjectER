@@ -26,9 +26,10 @@ public class MoveState : State
 
     public void OnUpdate(StateMachine machine)
     {
-        machine.rigid.velocity = machine.config.MoveSpeed * machine.config.MoveDir_Global;
+        //machine.rigid.velocity = machine.config.MoveSpeed * machine.config.MoveDir_Global;
+        machine.rigid.MovePosition(machine.transform.position + Time.deltaTime * machine.config.MoveSpeed * machine.config.MoveDir_Global);
 
-        Debug.DrawRay(machine.transform.position, machine.config.MoveSpeed * machine.config.MoveDir_Global, Color.red, 1f);
+        //Debug.DrawRay(machine.transform.position, machine.config.MoveSpeed * machine.config.MoveDir_Global, Color.red, 1f);
 
         machine.anim.SetFloat("Strafe", machine.config.InputDirFollow.x);
         machine.anim.SetFloat("Forward", machine.config.InputDirFollow.z);
@@ -42,6 +43,10 @@ public class MoveState : State
         if (machine.config.JumpInput)
         {
             machine.ChangeState("Jump");
+        }
+        if (machine.gc.IsGrounded() == false)
+        {
+            machine.ChangeState("Drop");
         }
     }
 }
