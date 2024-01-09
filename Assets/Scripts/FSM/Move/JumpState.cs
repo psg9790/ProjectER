@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class JumpState : State
 {
+    bool groundCheck = false;
     public void OnEnter(StateMachine machine)
     {
+        groundCheck = false;
         Debug.Log("jump enter");
         machine.config.SetJumpInput(false);
         machine.anim.SetBool("Jump", true);
+        machine.rigid.AddForce(Vector3.up * 5.5f, ForceMode.Impulse);
+
+        Task.Run(() => DoGroundCheck(500));
     }
 
     public void OnExit(StateMachine machine)
@@ -26,22 +33,25 @@ public class JumpState : State
 
     public void OnUpdate(StateMachine machine)
     {
-        // machine.cc.Move(Time.deltaTime * machine.Config.MoveSpeed * machine.Config.MoveDir_Global);
-        // machine.Config.UpdateJumpValue();
+        if (groundCheck == true)
+        {
+            if (machine.gc.IsGrounded() == true)
+            {
+                if (machine.config.XZInputDir != Vector2.zero)
+                {
+                    machine.ChangeState("Move");
+                }
+                else
+                {
+                    machine.ChangeState("Idle");
+                }
+            }
+        }
+    }
 
-
-        // Debug.Log(machine.GetComponent<GroundChecker>().IsGrounded());
-        // if (machine.GetComponent<GroundChecker>().IsGrounded())
-        // {
-        //     if (machine.Config.InputDir_Local.magnitude > 0)    // 이동 입력중이면 Move로
-        //     {
-        //         machine.Animator.SetBool("Move", true);
-        //         machine.ChangeState("Move");
-        //     }
-        //     else    // Idle로
-        //     {
-        //         machine.ChangeState("Idle");
-        //     }
-        // }
+    async Task DoGroundCheck(int milli)
+    {
+        await Task.Delay(milli);
+        groundCheck = true;
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GroundChecker : MonoBehaviour
@@ -12,6 +14,8 @@ public class GroundChecker : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool drawGizmo;
 
+    [ShowInInspector][ReadOnly] public bool IS_GROUNDED => IsGrounded();
+
     private void OnDrawGizmos()
     {
         if (!drawGizmo) return;
@@ -22,7 +26,9 @@ public class GroundChecker : MonoBehaviour
 
     public bool IsGrounded()
     {
-        return Physics.BoxCast(transform.position, boxSize, -transform.up, transform.rotation, maxDistance, groundLayer);
+        // return Physics.BoxCast(transform.position, boxSize, -transform.up, transform.rotation, maxDistance, groundLayer);
+        RaycastHit[] hits = Physics.BoxCastAll(transform.position, boxSize, -transform.up, transform.rotation, maxDistance, groundLayer);
+        return hits.Length > 0 ? true : false;
     }
 }
 

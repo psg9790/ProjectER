@@ -33,9 +33,9 @@ public class IdleState : State
         {
             machine.ChangeState("Move");
         }
-        // if (machine.Config.JumpInput)
-        // {
-        //     machine.ChangeState("Jump");
-        // }
+        if (machine.config.JumpInput)
+        {
+            machine.ChangeState("Jump");
+        }
     }
 }

@@ -13,6 +13,7 @@ public class StateMachine : MonoBehaviour
     public PlayerConfig config { get; private set; }
     public Animator anim { get; private set; }
     public Rigidbody rigid { get; private set; }
+    public GroundChecker gc { get; private set; }
 
     // 상태저장용 딕셔너리
     protected Dictionary<string, State> stateTable;
@@ -28,6 +29,7 @@ public class StateMachine : MonoBehaviour
         config = GetComponent<PlayerConfig>();
         anim = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
+        gc = GetComponent<GroundChecker>();
     }
 
     protected void Start()

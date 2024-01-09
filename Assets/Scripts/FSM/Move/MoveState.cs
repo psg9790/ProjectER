@@ -26,11 +26,6 @@ public class MoveState : State
 
     public void OnUpdate(StateMachine machine)
     {
-        //machine.transform.position += Time.deltaTime * machine.Config.MoveSpeed * machine.Config.MoveDir_Global;
-        //machine.cc.Move(Time.deltaTime * machine.config.MoveSpeed * machine.config.MoveDir_Global);
-        // machine.rigid.velocity = new Vector3(machine.config.MoveSpeed * machine.config.MoveDir_Global.x,
-        // machine.rigid.velocity.y,
-        // machine.config.MoveSpeed * machine.config.MoveDir_Global.z);
         machine.rigid.velocity = machine.config.MoveSpeed * machine.config.MoveDir_Global;
 
         Debug.DrawRay(machine.transform.position, machine.config.MoveSpeed * machine.config.MoveDir_Global, Color.red, 1f);
@@ -43,6 +38,10 @@ public class MoveState : State
         if (machine.config.XZInputDir == Vector2.zero)
         {
             machine.ChangeState("Idle");
+        }
+        if (machine.config.JumpInput)
+        {
+            machine.ChangeState("Jump");
         }
     }
 }
